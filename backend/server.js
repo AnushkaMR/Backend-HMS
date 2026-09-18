@@ -107,12 +107,14 @@ const startServer = async () => {
   console.log("Starting server and connecting to MongoDB...");
   await connectDB();
   await createPermanentAdmin();
-  
-  // Vercel sets NODE_ENV to production automatically.
-  // We only want to 'listen' and run cron jobs locally.
-  if (process.env.NODE_ENV !== "production") {
+
+  // Always listen on a port — required for Azure App Service and local dev.
+  // Vercel does NOT use app.listen(); it imports the exported `app` directly.
+  // WEBSITE_SITE_NAME is an env var set automatically by Azure App Service.
+  const isVercel = process.env.VERCEL === "1";
+  if (!isVercel) {
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`✅ Server running on port ${PORT}`);
     });
     setupAppointmentReminders();
   }
