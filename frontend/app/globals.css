@@ -25,3 +25,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ===== BOX / SHARP CORNERS — remove all rounded corners globally ===== */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
