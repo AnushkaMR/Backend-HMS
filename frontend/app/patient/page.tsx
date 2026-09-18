@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/app/navbar/Navbar"; // Adjust this path if your Navbar is somewhere else!
 import Footer from "../footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 export default function PatientDashboard() {
   const [myAppointments, setMyAppointments] = useState<any[]>([]);
@@ -30,7 +31,7 @@ export default function PatientDashboard() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/appointments/my-appointments",
+        `${API_BASE_URL}/api/appointments/my-appointments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -61,7 +62,7 @@ export default function PatientDashboard() {
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(
-        `http://localhost:5000/api/appointments/${apptId}`,
+        `${API_BASE_URL}/api/appointments/${apptId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

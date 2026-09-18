@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Mail, Lock, UserPlus, ArrowRight, Loader2 } from "lucide-react";
 import Navbar from "../navbar/Navbar";
 import { GoogleLogin } from "@react-oauth/google";
+import API_BASE_URL from "@/src/lib/apiConfig";
 // Ensure this path is correct for your project!
 
 interface RegisterResponse {
@@ -26,7 +27,7 @@ export default function RegisterPage() {
     setError("");
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/google", {
+      const response = await fetch(`${API_BASE_URL}/api/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: credentialResponse.credential }),
@@ -67,7 +68,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch(`${API_BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

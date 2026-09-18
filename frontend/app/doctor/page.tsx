@@ -14,6 +14,7 @@ import {
   Users,
   Trash2,
 } from "lucide-react";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -51,7 +52,7 @@ export default function DoctorDashboard() {
     if (!token) return;
 
     // Fetch Profile
-    const profRes = await fetch("http://localhost:5000/api/doctor/profile", {
+    const profRes = await fetch(`${API_BASE_URL}/api/doctor/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -79,7 +80,7 @@ export default function DoctorDashboard() {
 
     // Fetch Booked Appointments
     const apptRes = await fetch(
-      "http://localhost:5000/api/appointments/my-appointments",
+      `${API_BASE_URL}/api/appointments/my-appointments`,
       {
         headers: { Authorization: `Bearer ${token}` },
       },
@@ -116,7 +117,7 @@ export default function DoctorDashboard() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/doctor/availability",
+        `${API_BASE_URL}/api/doctor/availability`,
         {
           method: "POST",
           headers: {
@@ -149,7 +150,7 @@ export default function DoctorDashboard() {
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(
-        `http://localhost:5000/api/appointments/${apptId}`,
+        `${API_BASE_URL}/api/appointments/${apptId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

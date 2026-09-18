@@ -18,6 +18,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import Footer from "../footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 export default function AdminDashboard() {
   // --- DOCTOR STATE ---
@@ -53,19 +54,19 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
     try {
       // Fetch Doctors
-      const resDocs = await fetch("http://localhost:5000/api/doctors", {
+      const resDocs = await fetch(`${API_BASE_URL}/api/doctors`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resDocs.ok) setDoctors(await resDocs.json());
 
       // Fetch Services
-      const resServs = await fetch("http://localhost:5000/api/services", {
+      const resServs = await fetch(`${API_BASE_URL}/api/services`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (resServs.ok) setServices(await resServs.json());
 
       // Fetch Reviews
-      const resReviews = await fetch("http://localhost:5000/api/reviews");
+      const resReviews = await fetch(`${API_BASE_URL}/api/reviews`);
       if (resReviews.ok) setReviews(await resReviews.json());
     } catch (error) {
       console.error("Failed to fetch data");
@@ -89,7 +90,7 @@ export default function AdminDashboard() {
     if (doctorImage) dataToSend.append("image", doctorImage);
 
     try {
-      const response = await fetch("http://localhost:5000/api/create-doctor", {
+      const response = await fetch(`${API_BASE_URL}/api/create-doctor`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: dataToSend,
@@ -119,7 +120,7 @@ export default function AdminDashboard() {
     if (!window.confirm(`Remove Dr. ${name}?`)) return;
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/doctor/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/doctor/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -147,7 +148,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/services", {
+      const response = await fetch(`${API_BASE_URL}/api/services`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: dataToSend,
@@ -171,7 +172,7 @@ export default function AdminDashboard() {
     if (!window.confirm(`Remove service: ${name}?`)) return;
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:5000/api/services/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/services/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -202,7 +203,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/reviews", {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: dataToSend,
@@ -230,7 +231,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/reviews/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

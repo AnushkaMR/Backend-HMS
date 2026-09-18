@@ -6,6 +6,7 @@ import { Star, User, ChevronRight, AlertCircle } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import Navbar from "../navbar/Navbar";
 import Footer from "../footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 // --- ANIMATION SETTINGS ---
 const containerVariants: Variants = {
@@ -28,9 +29,9 @@ const getImageUrl = (imagePath?: string | null) => {
     return imagePath;
   }
   if (imagePath.startsWith("/")) {
-    return `http://localhost:5000${imagePath}`;
+    return `${API_BASE_URL}${imagePath}`;
   }
-  return `http://localhost:5000/${imagePath}`;
+  return `${API_BASE_URL}/${imagePath}`;
 };
 
 export default function DoctorsListingPage() {
@@ -41,7 +42,7 @@ export default function DoctorsListingPage() {
     // PUBLIC FETCH LOGIC
     const fetchDoctors = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/doctors");
+        const res = await fetch(`${API_BASE_URL}/api/doctors`);
 
         if (res.ok) {
           setDoctors(await res.json());

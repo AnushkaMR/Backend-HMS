@@ -7,6 +7,7 @@ import { Star, User, Calendar, Clock, ArrowLeft, ChevronRight, AlertCircle } fro
 import { motion } from "framer-motion";
 import Navbar from "@/app/navbar/Navbar"; // 🔴 Check this path matches your project!
 import Footer from "@/app/footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 const getImageUrl = (imagePath?: string | null) => {
   if (!imagePath) return null;
@@ -14,9 +15,9 @@ const getImageUrl = (imagePath?: string | null) => {
     return imagePath;
   }
   if (imagePath.startsWith("/")) {
-    return `http://localhost:5000${imagePath}`;
+    return `${API_BASE_URL}${imagePath}`;
   }
-  return `http://localhost:5000/${imagePath}`;
+  return `${API_BASE_URL}/${imagePath}`;
 };
 
 export default function DoctorDetailsPage() {
@@ -40,7 +41,7 @@ export default function DoctorDetailsPage() {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/api/doctors/${doctorId}`, {
+        const res = await fetch(`${API_BASE_URL}/api/doctors/${doctorId}`, {
           // 2. Attach the token to the request
           headers: { "Authorization": `Bearer ${token}` }
         });

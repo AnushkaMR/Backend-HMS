@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/app/navbar/Navbar";
 import Footer from "@/app/footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 export default function BookingPage() {
   const [doctors, setDoctors] = useState<any[]>([]);
@@ -60,7 +61,7 @@ export default function BookingPage() {
     const fetchDoctors = async () => {
       const token = localStorage.getItem("token");
       try {
-        const res = await fetch("http://localhost:5000/api/doctors", {
+        const res = await fetch(`${API_BASE_URL}/api/doctors`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) setDoctors(await res.json());
@@ -97,7 +98,7 @@ export default function BookingPage() {
       // Fetch availability
       const fetchAvailability = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/appointments/check-availability?doctorId=${watchDoctorId}&date=${selectedDate}`);
+          const res = await fetch(`${API_BASE_URL}/api/appointments/check-availability?doctorId=${watchDoctorId}&date=${selectedDate}`);
           if (res.ok) {
             const data = await res.json();
             setFullyBookedSlots(data.fullyBookedSlots || []);
@@ -119,7 +120,7 @@ export default function BookingPage() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        "http://localhost:5000/api/appointments/book",
+        `${API_BASE_URL}/api/appointments/book`,
         {
           method: "POST",
           headers: {

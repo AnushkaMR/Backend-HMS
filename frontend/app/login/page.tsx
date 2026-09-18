@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Mail, Lock, LogIn, ArrowRight, Loader2 } from "lucide-react";
 import Navbar from "@/app/navbar/Navbar"; // Ensure this path correctly points to your Navbar!
 import { GoogleLogin } from "@react-oauth/google";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 interface LoginResponse {
   message: string;
@@ -26,7 +27,7 @@ export default function LoginPage() {
     setError("");
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/google", {
+      const response = await fetch(`${API_BASE_URL}/api/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: credentialResponse.credential }),
@@ -66,7 +67,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${API_BASE_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

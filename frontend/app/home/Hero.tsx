@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Footer from "../footer/Footer";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -32,14 +33,14 @@ export default function LandingPage() {
     const fetchData = async () => {
       try {
         // Fetch Doctors
-        const resDocs = await fetch("http://localhost:5000/api/doctors");
+        const resDocs = await fetch(`${API_BASE_URL}/api/doctors`);
         if (resDocs.ok) {
           const data = await resDocs.json();
           setDoctors(data.slice(0, 3));
         }
 
         // Fetch Services
-        const resServs = await fetch("http://localhost:5000/api/services");
+        const resServs = await fetch(`${API_BASE_URL}/api/services`);
         if (resServs.ok) {
           const servData = await resServs.json();
           setServices(servData.slice(0, 3)); // Display first 3 services
@@ -47,7 +48,7 @@ export default function LandingPage() {
 
         // Fetch Reviews
         const resTestimonials = await fetch(
-          "http://localhost:5000/api/reviews",
+          `${API_BASE_URL}/api/reviews`,
         );
         if (resTestimonials.ok) {
           const testData = await resTestimonials.json();
@@ -203,7 +204,7 @@ export default function LandingPage() {
               <div className="h-[45%] relative overflow-hidden bg-[#e6f7f8]">
                 {service.image ? (
                   getImageUrl(service.image)?.startsWith(
-                    "http://localhost:5000",
+                    API_BASE_URL,
                   ) ? (
                     <img
                       src={getImageUrl(service.image)!}
@@ -357,7 +358,7 @@ export default function LandingPage() {
                   <div className="h-[55%] relative overflow-hidden bg-[#e6f7f8]">
                     {doc.image ? (
                       getImageUrl(doc.image)?.startsWith(
-                        "http://localhost:5000",
+                        API_BASE_URL,
                       ) ? (
                         <img
                           src={getImageUrl(doc.image)!}
@@ -515,7 +516,7 @@ export default function LandingPage() {
                   {/* Avatar - Top Center */}
                   <div className="w-16 h-16 bg-white shadow-sm shrink-0 overflow-hidden flex items-center justify-center relative rounded-full border-4 border-white mb-5">
                     {getImageUrl(testimonial.image)?.startsWith(
-                      "http://localhost:5000",
+                      API_BASE_URL,
                     ) ? (
                       <img
                         src={getImageUrl(testimonial.image)!}

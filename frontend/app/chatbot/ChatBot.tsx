@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
+import API_BASE_URL from "@/src/lib/apiConfig";
 
 interface Message {
   id: string;
@@ -45,7 +46,7 @@ export default function ChatBot() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/doctors");
+        const res = await fetch(`${API_BASE_URL}/api/doctors`);
         if (res.ok) {
           const data = await res.json();
           setDoctors(data);
