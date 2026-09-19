@@ -91,8 +91,8 @@ export default function LandingPage() {
 
       {/* 1. HERO SECTION */}
       <section
-        className="w-full relative  bg-fixed bg-cover bg-center"
-        style={{ backgroundImage: "url('/hero.png')" }}
+        className="w-full relative bg-fixed bg-cover bg-center"
+        style={{ backgroundImage: "url('/Hero.png')" }}
       >
         <div className="relative flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 md:px-16 lg:px-24 py-10 md:py-16 gap-8 max-w-6xl mx-auto w-full">
           {/* TEXT CONTENT */}

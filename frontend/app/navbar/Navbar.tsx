@@ -65,7 +65,7 @@ export default function Navbar() {
       </div>
 
       {/* --- DESKTOP BUTTONS (Hidden on Mobile) --- */}
-      <div className="hidden md:flex items-center relative group px-4 py-2 bg-white/10 rounded-full backdrop-blur-md border border-white/20 shadow-lg transition-all duration-300 ease-in-out">
+      <div className="hidden md:flex items-center relative group bg-white/10 rounded-full backdrop-blur-md border border-white/20 shadow-lg transition-all duration-300 ease-in-out">
         {isLoggedIn ? (
           <button
             onClick={handleLogout}
@@ -139,7 +139,7 @@ export default function Navbar() {
                   }}
                   className="w-full flex justify-center items-center gap-2 bg-red-50 text-red-600 px-5 py-4 rounded-none font-bold text-xl border-2 border-red-200 hover:bg-red-100 transition"
                 >
-                  Logout <LogOut className="w-5 h-5" />
+                  Logout <LogOut className="w-2 h-5" />
                 </button>
               ) : (
                 <Link
