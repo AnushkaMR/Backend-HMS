@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, UserPlus, ArrowRight, Loader2 } from "lucide-react";
 import Navbar from "../navbar/Navbar";
-import { GoogleLogin } from "@react-oauth/google";
 import API_BASE_URL from "@/src/lib/apiConfig";
-// Ensure this path is correct for your project!
 
 interface RegisterResponse {
   message: string;
@@ -22,36 +20,6 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    setError("");
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ credential: credentialResponse.credential }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Google auth failed");
-
-      setSuccess(true);
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        if (data.role) localStorage.setItem("role", data.role);
-
-        setTimeout(() => {
-          router.push("/patient");
-        }, 1000);
-      } else {
-        setTimeout(() => router.push("/login"), 1000);
-      }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
-      setIsLoading(false);
-    }
-  };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,9 +69,6 @@ export default function RegisterPage() {
       <div className="flex-grow flex items-center justify-center px-6 sm:px-12 lg:px-20 py-4">
         <div className="w-full max-w-sm bg-white rounded-lg p-7 shadow-lg border border-slate-100">
           <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
-              <UserPlus className="w-6 h-6" />
-            </div>
             <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">
               Create Account
             </h2>
@@ -203,27 +168,6 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
-
-          {/* GOOGLE DIVIDER */}
-          <div className="mt-6 flex items-center justify-center">
-            <span className="w-full border-t border-slate-200"></span>
-            <span className="px-3 text-xs font-medium text-slate-400 bg-white">
-              OR
-            </span>
-            <span className="w-full border-t border-slate-200"></span>
-          </div>
-
-          {/* GOOGLE LOGIN */}
-          <div className="mt-4 flex justify-center w-full [&>div]:w-full">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => setError("Google Authentication Failed")}
-              theme="outline"
-              size="large"
-              shape="rectangular"
-              width="300"
-            />
-          </div>
 
           {/* LOGIN LINK */}
           <div className="mt-6 text-center text-xs font-medium text-slate-500 border-t border-slate-100 pt-4">

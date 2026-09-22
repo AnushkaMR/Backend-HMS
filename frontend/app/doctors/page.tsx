@@ -73,9 +73,6 @@ export default function DoctorsListingPage() {
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">
             Our Specialists
           </h1>
-          <p className="text-slate-500 mt-2 text-sm">
-            Find and book the perfect doctor for your needs.
-          </p>
         </motion.div>
 
         {/* 🔴 DIAGNOSTIC ERROR MESSAGE DISPLAY */}
@@ -133,11 +130,11 @@ export default function DoctorsListingPage() {
                       <User className="w-12 h-12 text-slate-300" />
                     )}
 
-                  <div className="absolute top-3 right-3 flex items-center justify-center bg-white/90 backdrop-blur-sm text-yellow-600 px-2 py-0.5 rounded-none shadow-sm text-xs font-bold border border-yellow-100">
-                    <Star className="w-3.5 h-3.5 mr-0.5 fill-current" />
-                    {doc.rating || "New"}
+                    <div className="absolute top-3 right-3 flex items-center justify-center bg-white/90 backdrop-blur-sm text-yellow-600 px-2 py-0.5 rounded-none shadow-sm text-xs font-bold border border-yellow-100">
+                      <Star className="w-3.5 h-3.5 mr-0.5 fill-current" />
+                      {doc.rating || "New"}
+                    </div>
                   </div>
-                </div>
 
                   <div className="p-5 w-full flex flex-col items-center flex-grow">
                     <h2 className="text-lg font-bold text-slate-800 mb-0.5">

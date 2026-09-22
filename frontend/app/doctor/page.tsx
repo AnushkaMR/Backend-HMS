@@ -116,17 +116,14 @@ export default function DoctorDashboard() {
       }));
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/doctor/availability`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ availability: formattedAvailability }),
+      const response = await fetch(`${API_BASE_URL}/api/doctor/availability`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({ availability: formattedAvailability }),
+      });
 
       const data = await response.json();
       if (response.ok) {
@@ -149,13 +146,10 @@ export default function DoctorDashboard() {
 
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(
-        `${API_BASE_URL}/api/appointments/${apptId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const res = await fetch(`${API_BASE_URL}/api/appointments/${apptId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (res.ok) {
         // Instantly remove the appointment from the screen with a smooth animation

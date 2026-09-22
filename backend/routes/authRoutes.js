@@ -8,6 +8,7 @@ import Service from "../models/service.js";
 import Review from "../models/Review.js";
 import Testimonial from "../models/Testimonial.js";
 import { OAuth2Client } from "google-auth-library";
+// import { sendCancellationEmail } from "../utils/email.js"; // Uncomment when EMAIL_USER & EMAIL_PASS are set in .env
 const router = express.Router();
 
 // 1. ADMIN MIDDLEWARE (The Admin Bouncer)
@@ -313,10 +314,11 @@ router.get("/appointments/check-availability", async (req, res) => {
       slotCounts[appt.time] = (slotCounts[appt.time] || 0) + 1;
     });
 
-    // Determine fully booked slots (>= 4)
-    const fullyBookedSlots = Object.keys(slotCounts).filter(time => slotCounts[time] >= 4);
+    // Determine fully booked slots (>= 3 patients per 1-hour sub-slot)
+    const fullyBookedSlots = Object.keys(slotCounts).filter(time => slotCounts[time] >= 3);
 
-    res.json({ fullyBookedSlots });
+    // Return both the full-slots list AND per-slot counts (for capacity badges)
+    res.json({ fullyBookedSlots, slotCounts });
   } catch (error) {
     res.status(500).json({ message: "Error checking availability", error });
   }
@@ -339,10 +341,10 @@ router.post("/appointments/book", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "You have already booked this time slot. Please choose another." });
     }
 
-    // 2. Check if the slot has reached the 4-appointment limit
+    // 2. Check if the slot has reached the 3-patient limit (per 1-hour sub-slot)
     const appointmentCount = await Appointment.countDocuments({ doctorId, date, time });
-    if (appointmentCount >= 4) {
-      return res.status(400).json({ message: "This time slot is fully booked (4/4). Please choose another." });
+    if (appointmentCount >= 3) {
+      return res.status(400).json({ message: "This time slot is fully booked (3/3). Please choose another." });
     }
 
     const newAppointment = new Appointment({
@@ -391,22 +393,54 @@ router.delete("/doctor/:id", isAdmin, async (req, res) => {
   }
 });
 
-// PATIENT/DOCTOR: CANCEL AN APPOINTMENT (with ownership check)
+// PATIENT/DOCTOR: CANCEL AN APPOINTMENT (with ownership check + email notification)
 router.delete("/appointments/:id", authenticateToken, async (req, res) => {
   try {
-    const appointment = await Appointment.findById(req.params.id);
+    // Populate both patient and doctor so we can read their emails & names
+    const appointment = await Appointment.findById(req.params.id)
+      .populate("patientId", "email name")
+      .populate("doctorId",  "email name");
+
     if (!appointment) return res.status(404).json({ message: "Appointment not found" });
 
     // Only the patient who booked it OR the assigned doctor can cancel
     const isOwner =
-      appointment.patientId.toString() === req.user.id ||
-      appointment.doctorId.toString() === req.user.id;
+      appointment.patientId._id.toString() === req.user.id ||
+      appointment.doctorId._id.toString()  === req.user.id;
 
     if (!isOwner) {
       return res.status(403).json({ message: "You are not authorized to cancel this appointment." });
     }
 
+    // Determine who cancelled, and who should receive the notification
+    const cancelledBy = req.user.id === appointment.doctorId._id.toString() ? "doctor" : "patient";
+
+    const patientEmail = appointment.patientId.email;
+    const patientName  = appointment.patientName || appointment.patientId.name || "Patient";
+    const doctorEmail  = appointment.doctorId.email;
+    const doctorName   = appointment.doctorId.name || "Doctor";
+
+    // Delete first so the route succeeds even if email fails
     await Appointment.findByIdAndDelete(req.params.id);
+
+    // ── Email notification (uncomment after setting EMAIL_USER & EMAIL_PASS in .env) ──
+    // const emailPayload = {
+    //   cancelledBy,
+    //   patientName,
+    //   doctorName,
+    //   date: appointment.date,
+    //   time: appointment.time,
+    // };
+    // if (cancelledBy === "doctor") {
+    //   // Doctor cancelled → notify the patient
+    //   sendCancellationEmail({ toEmail: patientEmail, toName: patientName, ...emailPayload })
+    //     .catch((err) => console.error("[Email] Failed to notify patient:", err.message));
+    // } else {
+    //   // Patient cancelled → notify the doctor
+    //   sendCancellationEmail({ toEmail: doctorEmail, toName: `Dr. ${doctorName}`, ...emailPayload })
+    //     .catch((err) => console.error("[Email] Failed to notify doctor:", err.message));
+    // }
+
     res.json({ message: "Appointment cancelled successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error cancelling appointment", error });

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 // Added Menu and X icons for the mobile toggle
 import { User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,28 +40,26 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative flex justify-between items-center px-6 md:px-12 py-4 bg-[#ADD5ED] shadow-sm md:pl-40 md:pr-40 z-50">
+    <nav className="relative flex justify-between items-center h-20  px-6 md:px-12 py-4 bg-[#ADD5ED] shadow-sm md:pl-40 md:pr-40 z-50">
       {/* LOGO */}
-      <div className="text-3xl font-extrabold tracking-tighter text-slate-900 italic">
-        LOGO
-      </div>
+      <Image src="/nav.png" alt="logo" width={200} height={200}></Image>
 
       {/* --- DESKTOP MENU (Hidden on Mobile) --- */}
       <div className="hidden md:flex gap-8 font-medium text-xl text-slate-800 items-center">
         <Link href="/" className="hover:text-white transition">
-          Home
+          HOME
         </Link>
         <Link href="/doctors" className="hover:text-white transition">
-          Doctors
+          DOCTORS
         </Link>
         <Link href="/patient/book" className="hover:text-white transition">
-          Appointments
+          APPOINTMENTS
         </Link>
         <Link
           href={dashboardUrl}
           className="flex items-center gap-1 hover:text-white transition group"
         >
-          Dashboard
+          DASHBOARD
         </Link>
       </div>
 

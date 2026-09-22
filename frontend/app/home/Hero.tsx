@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Footer from "../footer/Footer";
 import API_BASE_URL from "@/src/lib/apiConfig";
+import { branches } from "@/data/branches";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -47,9 +48,7 @@ export default function LandingPage() {
         }
 
         // Fetch Reviews
-        const resTestimonials = await fetch(
-          `${API_BASE_URL}/api/reviews`,
-        );
+        const resTestimonials = await fetch(`${API_BASE_URL}/api/reviews`);
         if (resTestimonials.ok) {
           const testData = await resTestimonials.json();
           setTestimonials(testData);
@@ -182,9 +181,6 @@ export default function LandingPage() {
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">
               Clinical Expertise
             </h2>
-            <p className="text-[#597e88] font-bold tracking-wider text-[10px] uppercase mt-1">
-              Advanced medical services
-            </p>
           </div>
           <Link
             href="/services"
@@ -203,9 +199,7 @@ export default function LandingPage() {
               {/* Image Block */}
               <div className="h-[45%] relative overflow-hidden bg-[#e6f7f8]">
                 {service.image ? (
-                  getImageUrl(service.image)?.startsWith(
-                    API_BASE_URL,
-                  ) ? (
+                  getImageUrl(service.image)?.startsWith(API_BASE_URL) ? (
                     <img
                       src={getImageUrl(service.image)!}
                       alt={service.name}
@@ -264,9 +258,6 @@ export default function LandingPage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="flex-1 z-10 max-w-lg"
           >
-            <span className="text-[#597e88] font-black uppercase tracking-widest text-[10px] mb-2.5 block">
-              Book Fast & Secure
-            </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-5 sm:mb-6 text-slate-900">
               Schedule Your Visit <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0f4c5c] to-[#597e88]">
@@ -335,9 +326,6 @@ export default function LandingPage() {
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">
               Our Doctors
             </h2>
-            <p className="text-[#597e88] font-bold tracking-wider text-[10px] uppercase mt-1">
-              Meet our team of experts
-            </p>
           </div>
           <Link
             href="/doctors"
@@ -357,9 +345,7 @@ export default function LandingPage() {
                   {/* Image Block */}
                   <div className="h-[55%] relative overflow-hidden bg-[#e6f7f8]">
                     {doc.image ? (
-                      getImageUrl(doc.image)?.startsWith(
-                        API_BASE_URL,
-                      ) ? (
+                      getImageUrl(doc.image)?.startsWith(API_BASE_URL) ? (
                         <img
                           src={getImageUrl(doc.image)!}
                           alt={doc.name}
@@ -380,9 +366,6 @@ export default function LandingPage() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-                    <span className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm border border-slate-200/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-900 shadow-sm rounded-full z-10">
-                      Specialist
-                    </span>
                   </div>
 
                   {/* Text Block */}
@@ -478,12 +461,9 @@ export default function LandingPage() {
       {/* 5. VOICES OF TRUST */}
       <section className="bg-gradient-to-br from-[#35838D]/10 via-slate-50/50 to-white py-16 px-6 md:px-16 lg:px-24 overflow-hidden">
         <div className="text-center mb-14 relative z-10">
-          <h2 className="text-4xl md:text-5xl font-extrabold inline-block border-b-4 border-slate-900 pb-2">
+          <h2 className="text-4xl md:text-5xl font-extrabold inline-block  pb-2">
             Voices of Trust
           </h2>
-          <p className="text-[#597e88] font-bold tracking-wider text-[10px] uppercase mt-2">
-            Updated directly by the admin
-          </p>
         </div>
 
         <div className="max-w-5xl mx-auto relative z-10">
@@ -569,6 +549,60 @@ export default function LandingPage() {
         <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#35838D]/20 rounded-full blur-3xl -z-10" />
         <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-amber-100/30 rounded-full blur-3xl -z-10" />
       </section>
+      {/* 5. OUR Branches */}
+      <section className="bg-slate-50/50 py-16 px-6 md:px-16 lg:px-24">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-10 max-w-5xl mx-auto gap-6">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase">
+              Our Branches
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {branches.map((branch) => (
+            <div
+              key={branch.id}
+              className="group flex flex-col h-[380px] cursor-pointer border border-white/40 bg-white/60 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.06)] rounded-lg overflow-hidden hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] transition-all duration-500"
+            >
+              {/* Image Block */}
+              <div className="h-[55%] relative overflow-hidden bg-[#e6f7f8]">
+                <Image
+                  src={branch.image}
+                  alt={branch.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-all duration-700"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+              </div>
+
+              {/* Text Block */}
+              <div className="h-[45%] p-4 sm:p-5 flex flex-col justify-between bg-white/70 backdrop-blur-lg flex-1 text-center">
+                <div>
+                  <span className="text-[10px] font-bold text-[#597e88] uppercase tracking-widest mb-1 block">
+                    {branch.location}
+                  </span>
+                  <h3 className="text-lg font-black uppercase mb-1.5 text-slate-900 leading-tight tracking-tight line-clamp-1">
+                    {branch.name}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                    {branch.bio}
+                  </p>
+                </div>
+
+                <button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 mt-2">
+                  View Branch <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
