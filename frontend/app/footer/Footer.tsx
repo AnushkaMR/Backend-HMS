@@ -7,7 +7,7 @@ function Footer() {
     <div className="bg-white px-6 md:px-16 lg:px-24 py-8 border-t border-slate-100 flex flex-col items-center">
       <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
         {/* LOGO (Left) */}
-        <Image src="/nav2.png" alt="logo" width={200} height={200}></Image>
+        <Image src="/nav.png" alt="logo" width={200} height={200}></Image>
 
         {/* MENU (Center) */}
         <div className="md:w-2/4 flex justify-center items-center text-sm md:text-base font-bold gap-4 md:gap-8">
