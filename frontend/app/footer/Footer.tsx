@@ -1,13 +1,12 @@
 import Link from "next/link";
 
+import Image from "next/image";
 function Footer() {
   return (
     <div className="bg-white px-6 md:px-16 lg:px-24 py-8 border-t border-slate-100 flex flex-col items-center">
       <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
         {/* LOGO (Left) */}
-        <div className="md:w-1/4 text-2xl font-black tracking-tighter text-slate-900 text-center md:text-left">
-          LOGO
-        </div>
+        <Image src="/nav.png" alt="logo" width={200} height={200}></Image>
 
         {/* MENU (Center) */}
         <div className="md:w-2/4 flex justify-center items-center text-sm md:text-base font-bold gap-4 md:gap-8">

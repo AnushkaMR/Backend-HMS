@@ -228,23 +228,13 @@ export default function BookingPage() {
                     Patient Access Only
                   </h2>
                   <p className="text-[#597e88] text-sm font-semibold mb-8 max-w-sm leading-relaxed">
-                    {userRole === "guest"
-                      ? "You need to log in to your patient account to book an appointment."
-                      : "Doctors and Administrators cannot book appointments through this portal."}
+                    Please log in as a patient to book an appointment through this portal.
                   </p>
                   <Link
-                    href={
-                      userRole === "guest"
-                        ? "/login"
-                        : userRole === "doctor"
-                          ? "/doctor"
-                          : "/admin"
-                    }
+                    href="/login"
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-[#0f4c5c] to-[#1b263b] text-white px-6 py-3 rounded-full font-black text-sm hover:brightness-110 transition-all shadow-lg"
                   >
-                    {userRole === "guest"
-                      ? "Log In as Patient"
-                      : "Return to Dashboard"}
+                    Log In as Patient
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </motion.div>
